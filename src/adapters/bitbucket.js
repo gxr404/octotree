@@ -72,7 +72,7 @@ class Bitbucket extends Adapter {
 
   // @override
   getCreateTokenUrl() {
-    // github create token url 
+    // github create token url
     // return (
     //   `${location.protocol}//${location.host}/settings/tokens/new?` +
     //   'scopes=repo&description=Octotree%20browser%20extension'
@@ -113,9 +113,9 @@ class Bitbucket extends Adapter {
     }
 
     // projects/(projectKey)/repos/(repositorySlug)[/(type)][/(typeId)]
-    const match = window.location.pathname.match(/\/projects\/([^\/]+)\/repos\/([^\/]+)(?:\/([^\/]+))?(?:\/([^\/]+))?/);
+    const match = window.location.pathname.match(/\/projects\/([^\/]+)\/repos\/([^\/]+)(?:\/([^\/]+))?(?:\/([^\/]+))?/) || [];
 
-    const searchArr = encodeURIComponent(window.location.search).slice(1,).split('&')
+    const searchArr = decodeURIComponent(window.location.search).slice(1,).split('&')
     const queryParams = {}
     searchArr.forEach((val) => {
       const valArr = val.split('=')
@@ -195,7 +195,7 @@ class Bitbucket extends Adapter {
     const showOnlyChangedInPR = await extStore.get(STORE.PR);
     const pullNumber = isPR && showOnlyChangedInPR ? typeId : null;
     const pullHead = isPR
-      ? ($('.branch-from-to .ref-name-from').attr('original-title') || ':').match(/:(.*)/)[1] 
+      ? ($('.branch-from-to .ref-name-from').attr('original-title') || ':').match(/:(.*)/)[1]
       : null;
     const displayBranch = isPR && pullHead ? `${branch} < ${pullHead}` : null;
     const repo = {projectKey, repositorySlug, branch, displayBranch, pullNumber};
@@ -414,7 +414,7 @@ class Bitbucket extends Adapter {
    * Returns item's href value.
    * @api protected
    */
-  _getItemHref(repo, type, encodedPath, encodedBranch) { 
+  _getItemHref(repo, type, encodedPath, encodedBranch) {
     return `/projects/${repo.projectKey}/repos/${repo.repositorySlug}/browse/${encodedPath}?at=${encodedBranch}`;
   }
 

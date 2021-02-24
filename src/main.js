@@ -72,6 +72,13 @@ $(document).ready(() => {
 
     $document.trigger(EVENT.SIDEBAR_HTML_INSERTED);
 
+    // bitbucket 切换分支时是无刷新的 需动态加载目录
+    chrome.runtime.onMessage.addListener((msg) => {
+      if (msg === 'url-update-branch') {
+        tryLoadRepo()
+      }
+    });
+
     adapter.init($sidebar);
     await helpPopup.init();
 

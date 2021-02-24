@@ -9,7 +9,7 @@
   "icons": {
     "128": "icons/icon128.png"
   },
-  "permissions": [ "https://bitbucket.org/*", "storage"],
+  "permissions": [ "https://bitbucket.org/*", "storage", "tabs"],
   "optional_permissions": ["<all_urls>"],
   "web_accessible_resources": ["*.woff2", "*.png", "*.gif"],
   "background": {
