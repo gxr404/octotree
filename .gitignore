@@ -5,3 +5,5 @@ dist
 submissions.txt
 npm-debug.log
 .vscode
+
+.history

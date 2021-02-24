@@ -1,22 +1,38 @@
-## About
+# 改造支持 Bitbucket
 
-Browser extension that enhances GitHub code review and exploration. This repo contains the old source code of a limited version of Octotree. You can download Octotree for your browser from [our website](https://www.octotree.io). Octotree supports Chrome, Firefox, Edge, Opera and Safari.
+- Bitbucket version v5.6.2
+- Bitbucket API: https://docs.atlassian.com/bitbucket-server/rest/7.1.2/bitbucket-rest.html
 
-[![Chrome](assets/chrome.png "Chrome")](https://chrome.google.com/webstore/detail/octotree/bkhaagjahfmjljalopjnoealnfndnagc)
-[![Firefox](assets/firefox.png "Firefox")](https://addons.mozilla.org/en-US/firefox/addon/octotree/)
-[![Opera](assets/opera.png "Opera")](https://addons.opera.com/en/extensions/details/octotree/)
-[![Edge](assets/edge.png "Edge")](https://microsoftedge.microsoft.com/addons/detail/octotree/joagmknfcgpikbadjkaikmnhpjadihjg?hl=en-US)
-[![Safari](assets/safari.png "Safari")](https://itunes.apple.com/us/app/octotree-pro/id1457450145?mt=12)
+# 开始
 
-### Support
+1. 配置域名
 
-Please check out the [troubleshooting guide](https://github.com/ovity/octotree/issues/1025) to see if it solves the problem. If it doesn't, please either create [a forum ticket](https://github.com/ovity/octotree/issues/new) or send an email to support@octotree.io.
+> src\config\wex\manifest.json
 
-### Learn more
+```json
+{
+  // ...,
+  "permissions": [
+  "https://bitbucket.org/*", // 改为自己搭建的bitbucket域名
+    "storage"
+  ],
+ "content_scripts": [
+    "https://bitbucket.org/*"  // 改为自己搭建的bitbucket域名
+ ]
+}
+```
 
-- [Demo](https://www.youtube.com/watch?v=tyUNy-WFs-c)
-- [User guide](https://www.octotree.io/features)
-- [Authentication](https://www.octotree.io/features#authentication)
-- [Browser permissions](https://www.octotree.io/features#browser-permissions)
+> src\adapters\bitbucket.js
 
-[![Octotree](assets/demo.png)](https://www.youtube.com/watch?v=tyUNy-WFs-c)
+```js
+// ...
+const HOST = '//bitbucket.org' // 改为自己搭建的bitbucket域名
+// ...
+```
+
+2. npm run build
+
+
+# demo
+
+![demo](./docs/demo2.jpg)

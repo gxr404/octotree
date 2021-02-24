@@ -71,8 +71,16 @@ class TreeView {
         `<div class="octotree-header-summary">
           <div class="octotree-header-repo">
             <i class="octotree-icon-repo"></i>
-            <a href="/${repo.username}">${repo.username}</a> /
-            <a data-pjax href="/${repo.username}/${repo.reponame}">${repo.reponame}</a>
+            ${
+              repo.username
+              ? `<a href="/${repo.username}">${repo.username}</a> /`
+              : `<a href="/projects/${repo.projectKey}">${repo.projectKey}</a> /`
+            }
+            ${
+              repo.username && repo.reponame
+              ? `<a data-pjax href="/${repo.username}/${repo.reponame}">${repo.reponame}</a>`
+              : `<a data-pjax href="/projects/${repo.projectKey}/repos/${repo.repositorySlug}">${repo.repositorySlug}</a>`
+            }
           </div>
           <div class="octotree-header-branch">
             <i class="octotree-icon-branch"></i>
@@ -150,9 +158,11 @@ class TreeView {
     const $jstree = this.$jstree;
     if (!$jstree) return;
 
-    // Convert /username/reponame/object_type/branch/path to path
     const path = decodeURIComponent(location.pathname);
-    const match = path.match(/(?:[^\/]+\/){4}(.*)/);
+    // github Convert /username/reponame/object_type/branch/path to path
+    // const match = path.match(/(?:[^\/]+\/){4}(.*)/);
+    // bitbucket Convert /projects/projectKey/repos/repositorySlug/browse/path?at=branchOrCommitId to path
+    const match = path.match(/projects\/(?:[^\/]+\/)repos\/(?:[^\/]+\/)browse\/(.*)/);
     if (!match) return;
 
     const currentPath = match[1];

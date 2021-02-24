@@ -1,6 +1,7 @@
 class Adapter {
   constructor(deps) {
-    deps.forEach((dep) => window[dep]());
+    // 无依赖直接跳过
+    if (deps) deps.forEach((dep) => window[dep]());
     this._defaultBranch = {};
   }
 
@@ -29,6 +30,16 @@ class Adapter {
         if (err) return cb(err);
 
         submodules = submodules || {};
+
+        // TODO: 不应该写在这里 需写在各自的适配器里 bitbucket特有
+        if (Object.keys(submodules).length) {
+          Object.keys(submodules).forEach((key) => {
+            tree.push({
+              type: 'commit',
+              path: key
+            })
+          })
+        }
 
         const nextChunk = async (iteration = 0) => {
           const CHUNK_SIZE = 300;
@@ -333,8 +344,8 @@ class Adapter {
     patch += action === 'renamed' ? `<span class="text-green" title="${previous}">renamed</span>` : '';
     patch += action === 'removed' ? `<span class="text-red" title="${previous}">removed</span>` : '';
     patch += files ? `<span class='octotree-patch-files'>${files} ${files === 1 ? 'file' : 'files'}</span>` : '';
-    patch += additions !== 0 ? `<span class="text-green">+${additions}</span>` : '';
-    patch += deletions !== 0 ? `<span class="text-red">-${deletions}</span>` : '';
+    patch += additions !== 0 && !isNaN(parseInt(additions)) ? `<span class="text-green">+${additions}</span>` : '';
+    patch += deletions !== 0 && !isNaN(parseInt(additions)) ? `<span class="text-red">-${deletions}</span>` : '';
 
     return patch;
   }
@@ -362,14 +373,18 @@ class Adapter {
    * @api protected
    */
   _getItemHref(repo, type, encodedPath, encodedBranch) {
-    return `/${repo.username}/${repo.reponame}/${type}/${encodedBranch}/${encodedPath}`;
+    // 各自适配器实现
+    throw new Error('Not implemented');
+    // return `/${repo.username}/${repo.reponame}/${type}/${encodedBranch}/${encodedPath}`;
   }
   /**
    * Returns patch's href value.
    * @api protected
    */
   _getPatchHref(repo, patch) {
-    return `/${repo.username}/${repo.reponame}/pull/${repo.pullNumber}/files#diff-${patch.diffId}`;
+    // 各自适配器实现
+    throw new Error('Not implemented');
+    // return `/${repo.username}/${repo.reponame}/pull/${repo.pullNumber}/files#diff-${patch.diffId}`;
   }
 
   _sort(folder) {

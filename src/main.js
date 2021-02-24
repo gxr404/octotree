@@ -10,7 +10,8 @@ $(document).ready(() => {
     const $views = $sidebar.find('.octotree-view');
     const $spinner = $sidebar.find('.octotree-spin');
     const $pinner = $sidebar.find('.octotree-pin');
-    const adapter = new GitHub();
+    // const adapter = new GitHub();
+    const adapter = new Bitbucket();
     const treeView = new TreeView($dom, adapter);
     const optsView = new OptionsView($dom, adapter);
     const helpPopup = new HelpPopup($dom);
@@ -148,7 +149,8 @@ $(document).ready(() => {
             if (isSidebarPinned()) await toggleSidebar();
             else await onPinToggled(true);
           } else if (isSidebarVisible()) {
-            const replacer = ['username', 'reponame', 'branch', 'pullNumber'];
+            // const replacer = ['username', 'reponame', 'branch', 'pullNumber'];
+            const replacer = ['projectKey', 'repositorySlug', 'branch', 'pullNumber'];
             const repoChanged = JSON.stringify(repo, replacer) !== JSON.stringify(currRepo, replacer);
             if (repoChanged || reload === true) {
               hasError = false;
